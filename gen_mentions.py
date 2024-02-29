@@ -2,6 +2,8 @@ import os
 import re
 import pandas as pd
 
+# author: Oleg Telegin
+
 # Function to split the text into chunks and delimiters
 def split_into_chunks_and_delimiters(txt_file_path):
     with open(txt_file_path, 'r', encoding='utf-8') as file:
