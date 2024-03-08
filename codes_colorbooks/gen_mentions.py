@@ -92,8 +92,8 @@ def process_folder(input_folder, output_folder, xlsx_file_path_a, xlsx_file_path
             print(f"Processed {filename}")
 
 # Paths and function call
-input_folder = 'Data/bluebook_prepare/work_with_as_in'
-output_folder = 'Data/bluebook_prepare/gen_mentions'
-xlsx_file_path_a = 'Data/bluebook_prepare/Phrases3.xlsx'
-xlsx_file_path_b = 'Data/bluebook_prepare/Phrases4.xlsx'
+input_folder = '../Data/bluebook_prepare/work_with_as_in'
+output_folder = '../Data/bluebook_prepare/gen_mentions'
+xlsx_file_path_a = '../Data/bluebook_prepare/Phrases3.xlsx'
+xlsx_file_path_b = '../Data/bluebook_prepare/Phrases4.xlsx'
 process_folder(input_folder, output_folder, xlsx_file_path_a, xlsx_file_path_b)
