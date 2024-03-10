@@ -4,6 +4,7 @@ echo Transcribe docx to txt
 python docx_to_txt.py
 echo Delete strikethrough text (used to show changes from the last Meeting)
 python no_strikethrough.py
+echo Manually delete missed strikethrough text, so the next code runs using no_strikethrough_manual folder
 echo Concatenate footnote paragraphs (paragraphs after the footnote symbol now contain the whole footnote text)
 python concatenate_pars_footnotes.py
 echo Move footnotes to correct positions in the text

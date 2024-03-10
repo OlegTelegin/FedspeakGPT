@@ -87,5 +87,5 @@ def process_folder(input_folder_path, output_folder_path):
 
 # Paths and function call
 input_folder_path = '../Data/bluebook_prepare/change_titles'
-output_folder_path = '../Data/bluebook_prepare/append_pars'
+output_folder_path = '../Data/bluebook_prepare/concatenate_pars'
 process_folder(input_folder_path, output_folder_path)

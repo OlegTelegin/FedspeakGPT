@@ -52,6 +52,6 @@ def process_all_files_in_folder(input_folder_path, output_folder_path):
             print(f"Processed {filename}")
 
 # Paths and function call
-input_folder_path = '../Data/bluebook_prepare/no_strikethrough'
+input_folder_path = '../Data/bluebook_prepare/no_strikethrough_manual'
 output_folder_path = '../Data/bluebook_prepare/concatenate_pars_footnotes'
 process_all_files_in_folder(input_folder_path, output_folder_path)

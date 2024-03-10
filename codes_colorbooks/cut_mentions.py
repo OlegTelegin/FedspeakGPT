@@ -56,33 +56,42 @@ def send_gpt_request(system_content, user_content):
 
 # Process 1 text chunk
 def process_chunk(matched_chunks, matched_delimiters, output_file, entries_dict):
+    sentence_pattern = re.compile(r'(?<=\.)\s|(?<=\."\s)|(?<=\.”)\s')
     for index, matched_entries, chunk_text in matched_chunks:
+        sentences = sentence_pattern.split(chunk_text)
+        sentences = [sentence for sentence in sentences if sentence.strip()]
         print(index)
         new_delimiter = "{" + "mention" + matched_entries[0] + "}"
-        print(new_delimiter)
+        # print(new_delimiter)
 
         entry_main = entries_dict.get(matched_entries[0], "Default Value")
-        print(entry_main)
+        # print(entry_main)
         system_content = f"""You're an expert in Natural Language Processing. You can extract information from the text, using the 
-wording of the original text when possible. Use the wording from the text as much as possible, try not to 
-change the meaning of what is written about {entry_main}. The first sentence of this text discusses 
-{entry_main}. It may discuss {entry_main} explicitly or using generalization (for instance, discussing 
-'each of the Alternatives', 'every Alternative', or something similar). In this case, you can change the 
-wording using {entry_main} as the action object, but wording can only be changed in replacing the 
-generalized Alternatives indication with {entry_main}. I need to figure out what part of the following 
-text also discusses {entry_main}, possible market reaction to it, the Committee's thoughts about it, 
-staff's thoughts about it, assumptions under {entry_main}, current economic stance leading to pick 
-{entry_main}, or the consequences of choosing 
-{entry_main}. It could be the whole text, or part of the text up to some point, or just the first 
-sentence. You're given with the chunk of text, rewrite it but only as long as it relates to 
-{entry_main}. Stop when the topic has changed to something else."""
+wording of the original text when possible."""
 
-        user_content = chunk_text
+        user_content = f"""I will give you instructions and text about {entry_main}. Instructions: the first sentence of 
+the text discusses {entry_main}. It may discuss {entry_main} explicitly or using generalization (for instance, 
+discussing 'each of the Alternatives', 'every Alternative', or something similar). I need to figure out what part of 
+the following text also discusses {entry_main}, possible market reaction to it, the Committee's thoughts about it, 
+staff's thoughts about it, assumptions under {entry_main}, language used in {entry_main}, current economic stance 
+leading to pick {entry_main}, or the consequences of choosing {entry_main}. It could be the whole text or part of the 
+text up to some point. You're given with the chunk of text, rewrite it as long as it relates to {entry_main} in any of 
+the ways described earlier. Stop when the topic has changed to something unrelated in any way to {entry_main}. Don't 
+change any wording while rewriting the text. Text: {chunk_text}"""
         # print(system_content)
         # print(user_content)
-        response = send_gpt_request(system_content, user_content)
+        # Check if chunk_text is more than 1 sentence length
+        if len(sentences) > 1:
+            # More than one sentence, proceed with sending a GPT request
+            response = send_gpt_request(system_content, user_content)
+            # Assuming the response structure is as before, adjust as necessary
+            response_text = response.choices[0].message.content
+            tag_string = new_delimiter + " " + response_text + "\n"
+        else:
+            # Only one sentence, use chunk_text directly
+            response_text = chunk_text
+            tag_string = new_delimiter + response_text
         # print(f"Response for chunk {index} of Alternative {matched_entries[0]}:", response.choices[0].message.content)
-        tag_string = new_delimiter + " " + response.choices[0].message.content + "\n"
         output_file.write(tag_string)
 
 # Process all files in a folder
@@ -101,7 +110,7 @@ def main_processing(folder_path, output_folder, specific_entries, entries_dict):
 specific_entries = ['A', 'B', 'C', 'D', 'ABCD', 'ABC', 'ABD', 'ACD', 'BCD', 'AB', 'AC', 'BC', 'AD', 'BD', 'CD']
 specific_entries_values = ['Alternative A', 'Alternative B', 'Alternative C', 'Alternative D', 'four Alternatives (Alternatives A, B, C, and D)', 'three Alternatives (Alternatives A, B, and C)', 'three Alternatives (Alternatives A, B, and D)', 'three Alternatives (Alternatives A, C, and D)', 'three Alternatives (Alternatives B, C, and D)', 'two Alternatives (Alternatives A and B)', 'two Alternatives (Alternatives A and C)', 'two Alternatives (Alternatives B and C)', 'two Alternatives (Alternatives A and D)', 'two Alternatives (Alternatives B and D)', 'two Alternatives (Alternatives C and D)']
 entries_dict = dict(zip(specific_entries, specific_entries_values))
-folder_path = '../Data/bluebook_prepare/append_mentions_manual'
+folder_path = '../Data/bluebook_prepare/append_mentions_manual/test'
 output_folder = '../Data/bluebook_prepare/cut_mentions'
 
 main_processing(folder_path, output_folder, specific_entries, entries_dict)

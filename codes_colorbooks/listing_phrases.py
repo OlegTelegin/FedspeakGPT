@@ -86,7 +86,7 @@ def process_folder(input_folder, output_folder, phrases_file_a, phrases_file_b, 
             print(f"Processed {filename}")
 
 # Paths and function call
-input_folder = '../Data/bluebook_prepare/append_pars'
+input_folder = '../Data/bluebook_prepare/concatenate_pars'
 output_folder = '../Data/bluebook_prepare/listing_phrases'
 phrases_file_a = '../Data/bluebook_prepare/list_of_phrases_for_four_alternatives.txt'
 phrases_file_b = '../Data/bluebook_prepare/list_of_phrases_for_three_alternatives.txt'
